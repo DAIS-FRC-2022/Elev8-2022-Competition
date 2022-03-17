@@ -173,11 +173,11 @@ public class RobotContainer {
     // .whenActive(new FeederCommand(this.feederSubsystem));
 
     // Intake Forward Button Integration
-    new JoystickButton(RobotContainer.joyC, 1)
+    new JoystickButton(RobotContainer.joyC, 11)
         .toggleWhenActive(new IntakeCommand(this.intakeSubsystem)); // X
     new JoystickButton(RobotContainer.joyD, 1)
         .toggleWhenActive(new ReverseCommand(this.intakeSubsystem, this.feederSubsystem)); // A
-    
+  
     // Feeder Button
     new JoystickButton(RobotContainer.joyD,2)
         .toggleWhenActive(new FeederCommand(this.feederSubsystem)); // B
