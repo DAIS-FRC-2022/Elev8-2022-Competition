@@ -40,6 +40,7 @@ public class IntakeCommand extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return !RobotContainer.joyD.getRawButton(OIConstants.intakeForward_Y_ButtonNumber);
+    // return !RobotContainer.joyD.getRawButton(OIConstants.intakeForward_Y_ButtonNumber);
+    return false;
   }
 }

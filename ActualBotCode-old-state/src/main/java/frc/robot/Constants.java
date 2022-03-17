@@ -29,7 +29,7 @@ public final class Constants {
         public static final int BR_ID = 22;//12; // 22
         public static final double kWheelRadius = Units.inchesToMeters(6);
         public static final double kMaxSpeed = 0.6; // multiplier for distance movement
-        public static final double kMaxAngularSpeed = 0.6; // multiplier for angular movement
+        public static final double kMaxAngularSpeed = 0.8; // multiplier for angular movement
 
         public static final double kTrackWidth = 0.61; // meters
         public static final double kP = 5;
