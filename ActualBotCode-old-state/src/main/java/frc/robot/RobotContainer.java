@@ -195,9 +195,8 @@ public class RobotContainer {
     new JoystickButton(RobotContainer.joyC,
     OIConstants.OIJoyC.outerPGStop_Button_Three)
     .whenPressed(new OuterPGClimberStopCommand(this.outerPGSubsystem,
-    this.outerPGSubsystem.getOuterPGPosition(),
+    this.outerPGSubsystem.getOuterPGPosition(), () -> dpadButtonLeft()));
 
-    // () -> dpadButtonLeft()));
     new JoystickButton(RobotContainer.joyD, 7)
         .whenPressed(
             new SequentialCommandGroup(
