@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems.climber.outer;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
@@ -11,13 +12,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimberConstants.OuterClimberConstants;
 
 public class OuterClimberSubsystem extends SubsystemBase {
-  private final WPI_TalonSRX out_LC, out_RC;
+  private final WPI_TalonFX out_LC, out_RC;
   private final MotorControllerGroup out_C;
 
   /** Creates a new OuterClimberSubsystem. */
   public OuterClimberSubsystem() {
-    this.out_LC = new WPI_TalonSRX(5);
-    this.out_RC = new WPI_TalonSRX(6);
+    this.out_LC = new WPI_TalonFX(5);
+    this.out_RC = new WPI_TalonFX(6);
     this.out_LC.setInverted(false);
     this.out_RC.setInverted(true);
 

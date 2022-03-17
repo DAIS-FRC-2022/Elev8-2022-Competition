@@ -107,17 +107,15 @@ public final class Constants {
     }
 
     public final static class FeederConstants {
-
         public static final int feeder_ID = 2;
         public static final double deadband = 0.05;
-        public static final double feederSpeed = 0.5;
+        public static final double feederSpeed = 0.4;
         public static final int servo_port = 0;
-        public static final double initialAngle =0 ;
+        public static final double initialAngle = 0;
         public static final double positionAngle = 60;
     }
 
     public final static class ShooterConstants {
-
         public static final int shooter_ID = 3;
         public static final double deadband = 0.05;
         public static final double shooterSpeed = 0.35;
@@ -130,9 +128,8 @@ public final class Constants {
         public static final double kFF = 0.00017;
         public static final double kMaxOutput = 1;
         public static final double deadbandVelocity = 500;
-        public static double setThisVelocity = 2900;
+        public static double setThisVelocity = 2550;
     }
-
     public final static class ClimberConstants {
 
         public static final int falcon_ID = 6;

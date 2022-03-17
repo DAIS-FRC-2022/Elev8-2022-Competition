@@ -16,13 +16,13 @@ import frc.robot.Constants.FeederConstants;
 
 public class FeederSubsystem extends SubsystemBase {
   private final CANSparkMax feeder;
-  private final Servo stopper;
+  // private final Servo stopper;
 
   /** Creates a new FeederSubsystem. */
   public FeederSubsystem() {
     this.feeder = new CANSparkMax(FeederConstants.feeder_ID, MotorType.kBrushless);
-    this.stopper = new Servo(FeederConstants.servo_port);
-    this.stopper.setAngle(FeederConstants.initialAngle);
+    // this.stopper = new Servo(FeederConstants.servo_port);
+    // this.stopper.setAngle(FeederConstants.initialAngle);
   }
 
   @Override
@@ -33,29 +33,29 @@ public class FeederSubsystem extends SubsystemBase {
 
   public void stopFeeder() {
     this.feeder.set(0.0);
-    this.stopper.setAngle(FeederConstants.initialAngle);
+    // this.stopper.setAngle(FeederConstants.initialAngle);
   }
 
-  public double getPosition() {
-    return this.stopper.getAngle();
-  }
+  // public double getPosition() {
+  //   return this.stopper.getAngle();
+  // }
 
-  public void setFeederSpeed() {
+  public void setFeederSpeed(double feederSpeed) {
     double speedmotor = this.feeder.get();
     if (Math.abs(speedmotor) < FeederConstants.deadband) {
       double now = Timer.getFPGATimestamp();
       while (now < 0.6) {
         if (now == 0.2)
-          this.feeder.set(FeederConstants.feederSpeed / 3);
+          this.feeder.set(feederSpeed / 3);
         if (now == 0.4)
-          this.feeder.set(FeederConstants.feederSpeed / 2);
+          this.feeder.set(feederSpeed / 2);
       }
-      this.feeder.set(FeederConstants.feederSpeed);
-      this.stopper.setAngle(FeederConstants.positionAngle);
+      this.feeder.set(feederSpeed);
+      // this.stopper.setAngle(FeederConstants.positionAngle);
       // System.out.println("Timer : " + now);
     } else {
       this.feeder.set(0);
-      this.stopper.setAngle(FeederConstants.initialAngle);
+      // this.stopper.setAngle(FeederConstants.initialAngle);
 
     }
   }

@@ -5,6 +5,8 @@
 package frc.robot.commands.auto.feeder;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.FeederConstants;
+import frc.robot.commands.teleop.feeder.FeederCommand;
 import frc.robot.subsystems.FeederSubsystem;
 
 public class AutonomousFeederCommand extends CommandBase {
@@ -20,7 +22,7 @@ public class AutonomousFeederCommand extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    this.feederSubsystem.setFeederSpeed();
+    this.feederSubsystem.setFeederSpeed(FeederConstants.feederSpeed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

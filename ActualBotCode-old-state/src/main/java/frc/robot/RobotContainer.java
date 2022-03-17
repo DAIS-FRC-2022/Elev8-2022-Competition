@@ -27,6 +27,7 @@ import frc.robot.commands.auto.drive.tester.DriveBySecondCoordinateCommand;
 import frc.robot.commands.auto.drive.tester.DriveToACoordinateCommand;
 import frc.robot.commands.auto.intake.IntakeByTimeCommand;
 import frc.robot.commands.auto.shooter.ShooterByTimeCommand;
+import frc.robot.commands.teleop.ReverseCommand;
 // import frc.robot.commands.auto.shooter.ShooterByTimeCommand;
 import frc.robot.commands.teleop.climber.inner.InnerClimberCommand;
 import frc.robot.commands.teleop.climber.outer.OuterClimberCommand;
@@ -36,6 +37,7 @@ import frc.robot.commands.teleop.climber.pg.outer.OuterPGClimberCommand;
 import frc.robot.commands.teleop.climber.pg.outer.OuterPGClimberStopCommand;
 import frc.robot.commands.teleop.drive.DriveCommand;
 import frc.robot.commands.teleop.feeder.FeederCommand;
+import frc.robot.commands.teleop.feeder.servoCommand;
 // import frc.robot.commands.teleop.feeder.FeederCommand;
 import frc.robot.commands.teleop.intake.IntakeCommand;
 import frc.robot.commands.teleop.intake.IntakeStoppingCommand;
@@ -45,6 +47,7 @@ import frc.robot.commands.teleop.shooter.ShooterJoyTestCommand;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.FeederSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ServoFeederSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.climber.inner.InnerClimberSubsystem;
 import frc.robot.subsystems.climber.outer.OuterClimberSubsystem;
@@ -78,6 +81,7 @@ public class RobotContainer {
   private final OuterClimberSubsystem outerClimberSubsystem;
   private final InnerPGSubsystem innerPGSubsystem;
   private final OuterPGSubsystem outerPGSubsystem;
+  private final ServoFeederSubsystem servoFeederSubsystem;
   private final SlewRateLimiter speedLimit, turnLimit;
 
   /**
@@ -93,6 +97,7 @@ public class RobotContainer {
     this.outerClimberSubsystem = new OuterClimberSubsystem();
     this.innerPGSubsystem = new InnerPGSubsystem();
     this.outerPGSubsystem = new OuterPGSubsystem();
+    this.servoFeederSubsystem = new ServoFeederSubsystem();
 
     this.speedLimit = new SlewRateLimiter(DrivingConstants.kRiseLimiter);
     this.turnLimit = new SlewRateLimiter(DrivingConstants.kRiseLimiter);
@@ -170,19 +175,25 @@ public class RobotContainer {
     // Intake Forward Button Integration
     new JoystickButton(RobotContainer.joyD,
         OIConstants.intakeForward_Y_ButtonNumber)
-        .toggleWhenActive(new IntakeCommand(this.intakeSubsystem));
+        .toggleWhenActive(new IntakeCommand(this.intakeSubsystem)); // X
+    new JoystickButton(RobotContainer.joyD, 1)
+        .toggleWhenActive(new ReverseCommand(this.intakeSubsystem, this.feederSubsystem)); // A
     
-    new JoystickButton(RobotContainer.joyD,2
-        )
-        .toggleWhenActive(new FeederCommand(this.feederSubsystem));
+    // Feeder Button
+    new JoystickButton(RobotContainer.joyD,2)
+        .toggleWhenActive(new FeederCommand(this.feederSubsystem)); // B
+    
+    // Feeder Servo Button
+    new JoystickButton(RobotContainer.joyD,4)
+        .toggleWhenActive(new servoCommand(this.servoFeederSubsystem)); // Y
 
     // Shooter Button Binding Integration [by Time] => Works
     // new JoystickButton(RobotContainer.joyD, OIConstants.shooter_RB_ButtonNumber)
     // .whenActive(new ShooterByTimeCommand(shooterSubsystem, 10));
 
     // Shooter Button Binding Integration
-    new JoystickButton(RobotContainer.joyD, OIConstants.turn_LB_ButtonNumber)
-    .whenActive(new ShooterCommand(this.shooterSubsystem));
+    new JoystickButton(RobotContainer.joyD, 6)
+    .toggleWhenActive(new ShooterCommand(this.shooterSubsystem));
 
     // PG Stopper Button Binding Integration - Inner
     new JoystickButton(RobotContainer.joyC,
@@ -199,16 +210,18 @@ public class RobotContainer {
 
     new JoystickButton(RobotContainer.joyD, 7)
         .whenPressed(
-            new SequentialCommandGroup(
-            // new ParallelRaceGroup(new AutonomousIntakeCommand(this.intakeSubsystem),  
-            
-            // new DriveToACoordinateCommand(this.driveSubsystem, 1.5, 0)),
-                new DriveToACoordinateCommand(this.driveSubsystem, 0, 0),
-                new DriveBySecondCoordinateCommand(this.driveSubsystem, 167),
-                new DriveBySecondCoordinateCommand(this.driveSubsystem, 9),
-                new DriveToACoordinateCommand(this.driveSubsystem, 3, -0.94),
-                new DriveToACoordinateCommand(this.driveSubsystem, 0, 0),
-                new DriveBySecondCoordinateCommand(this.driveSubsystem, 167)));
+          new SequentialCommandGroup(
+            new ParallelRaceGroup(new AutonomousIntakeCommand(this.intakeSubsystem),  
+          
+            new DriveToACoordinateCommand(this.driveSubsystem, 1.5, 0)),
+            new DriveToACoordinateCommand(this.driveSubsystem, 0, 0),
+            new DriveBySecondCoordinateCommand(this.driveSubsystem, 167),
+            new DriveBySecondCoordinateCommand(this.driveSubsystem, 9),
+            new DriveToACoordinateCommand(this.driveSubsystem, 3, -0.94),
+            new DriveToACoordinateCommand(this.driveSubsystem, 0, 0),
+            new DriveBySecondCoordinateCommand(this.driveSubsystem, 167)
+          )
+        );
 
     new JoystickButton(RobotContainer.joyD, 8)
         .whenPressed(new DriveBySecondCoordinateCommand(this.driveSubsystem, 167));
