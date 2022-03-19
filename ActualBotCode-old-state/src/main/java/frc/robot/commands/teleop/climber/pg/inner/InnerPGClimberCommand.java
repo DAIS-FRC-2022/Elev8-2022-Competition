@@ -6,6 +6,7 @@ package frc.robot.commands.teleop.climber.pg.inner;
 
 import java.util.function.Supplier;
 
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.climber.pg.InnerPGSubsystem;
 
@@ -31,6 +32,7 @@ public class InnerPGClimberCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // SmartDashboard.putNumber("inner pid",);
     double pg = this.pg.get();
     boolean side = this.side.get();
 

@@ -4,7 +4,6 @@
 
 package frc.robot.subsystems;
 
-import frc.robot.RobotContainer;
 import frc.robot.Constants.DrivingConstants;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -65,7 +64,6 @@ public class DriveSubsystem extends SubsystemBase {
         DrivingConstants.neoCountsPerRevolution);
     this.rightSide = new MotorControllerGroup(this.FR, this.BR);
     this.rightSide.setInverted(true);
-    
 
     this.FL = new CANSparkMax(DrivingConstants.FL_ID, MotorType.kBrushless);
     this.BL = new CANSparkMax(DrivingConstants.BL_ID, MotorType.kBrushless);
@@ -87,7 +85,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     this.controller = new PIDController(0.6, 0, 0.00000);
     this.controllerang = new PIDController(0.016, 0, 0.009);
-    this.controllerangle = new PIDController(0.005, 0, 0.00);
+    this.controllerangle = new PIDController(0.07, 0, 0);
 
     this.x = new double[] { 2 };
     this.y = new double[] { 0 };
@@ -98,18 +96,25 @@ public class DriveSubsystem extends SubsystemBase {
     this.BL_encoder.setPosition(0.0);
   }
 
+  public static double getNavxRoll() {
+    return DriveSubsystem.navx.getPitch();
+  }
+
   @Override
   public void periodic() {
     this.pose = m_odometry.update(Rotation2d.fromDegrees(-DriveSubsystem.navx.getAngle()),
         (FL_encoder.getPosition() * Math.PI * Units.inchesToMeters(6)) / 10.71,
-        (-1*FR_encoder.getPosition() * Math.PI * Units.inchesToMeters(6)) / 10.71);
+        (-1 * FR_encoder.getPosition() * Math.PI * Units.inchesToMeters(6)) / 10.71);
     // This method will be called once per scheduler run
 
-    SmartDashboard.putNumber("Idhar Dekh : GYRO", DriveSubsystem.navx.getAngle());
-    SmartDashboard.putNumber("Idhar Dekh : POSE", this.pose.getRotation().getDegrees());
-    SmartDashboard.putNumber("Idhar Dekh : OFFSET", RobotContainer.GYRO_OFFSET);
-    SmartDashboard.putNumber("ecnx", pose.getX());
-    SmartDashboard.putNumber("ency", pose.getY());
+    // SmartDashboard.putNumber("Idhar Dekh : GYRO",
+    // DriveSubsystem.navx.getAngle());
+    // SmartDashboard.putNumber("Idhar Dekh : POSE",
+    // this.pose.getRotation().getDegrees());
+    // SmartDashboard.putNumber("ecnx", pose.getX());
+    // SmartDashboard.putNumber("ency", pose.getY());
+
+    // SmartDashboard.putNumber("PITCH", DriveSubsystem.getNavxRoll());
   }
 
   public double getPoseAngle() {
@@ -134,7 +139,7 @@ public class DriveSubsystem extends SubsystemBase {
 
   public void arcadeInbuilt(final double y, final double z) {
     // System.out.println("Speed: " + y + " " + z);
-    //this.rightSide.setInverted(false);
+    // this.rightSide.setInverted(false);
 
     this.driveTrain.arcadeDrive(y * DrivingConstants.kMaxSpeed, z * DrivingConstants.kMaxAngularSpeed);
   }
@@ -185,18 +190,18 @@ public class DriveSubsystem extends SubsystemBase {
       d_theta = Math.abs(d_theta);
       theta_dir *= 1;
     }
-    SmartDashboard.putNumber("d", d);
-    SmartDashboard.putNumber("x", a_botXpose);
-    SmartDashboard.putNumber("y", b_botYpose);
-    SmartDashboard.putNumber("angle to take", angletotake);
-    SmartDashboard.putNumber("angle to take with direction", d_theta *
-        theta_dir);
-    SmartDashboard.putNumber("D Theta", d_theta);
-    SmartDashboard.putNumber("Dir", theta_dir);
-    SmartDashboard.putNumber("angle", angle);
-    SmartDashboard.putNumber("Robotnavx", DriveSubsystem.navx.getAngle());
-    SmartDashboard.putNumber("speed", controllerang.calculate(0, d_theta *
-        theta_dir));
+    // SmartDashboard.putNumber("d", d);
+    // SmartDashboard.putNumber("x", a_botXpose);
+    // SmartDashboard.putNumber("y", b_botYpose);
+    // SmartDashboard.putNumber("angle to take", angletotake);
+    // SmartDashboard.putNumber("angle to take with direction", d_theta *
+    // theta_dir);
+    // SmartDashboard.putNumber("D Theta", d_theta);
+    // SmartDashboard.putNumber("Dir", theta_dir);
+    // SmartDashboard.putNumber("angle", angle);
+    // SmartDashboard.putNumber("Robotnavx", DriveSubsystem.navx.getAngle());
+    // SmartDashboard.putNumber("speed", controllerang.calculate(0, d_theta *
+    // theta_dir));
     if (Math.abs(x - this.a_botXpose) > 0.2 || Math.abs(y - this.b_botYpose) > 0.2) {
       this.trans_Lmot = this.controller.calculate(0, d) - this.controllerang.calculate(0, d_theta * theta_dir);
       this.trans_Rmot = this.controller.calculate(0, d) + this.controllerang.calculate(0, d_theta * theta_dir);
@@ -231,8 +236,8 @@ public class DriveSubsystem extends SubsystemBase {
   public double[] speedcontrolforanglecorrect(double angletocorrect) {
 
     this.angle = -DriveSubsystem.navx.getAngle() % 360;
-    SmartDashboard.putNumber("angle", angle);
-    SmartDashboard.putNumber("this.trans_Lmot", this.trans_Lmot);
+    // SmartDashboard.putNumber("angle", angle);
+    // SmartDashboard.putNumber("this.trans_Lmot", this.trans_Lmot);
     this.trans_Lmot = -this.controllerangle.calculate(angle, angletocorrect);
     this.trans_Rmot = this.controllerangle.calculate(angle, angletocorrect);
 
@@ -264,11 +269,10 @@ public class DriveSubsystem extends SubsystemBase {
   public double getB_Ypose() {
     return b_botYpose;
   }
+
   public double get_angle() {
     return angle;
   }
-
-  
 
   public void setSpeeds(double[] speeds) {
     this.leftSide.set(speeds[0]);

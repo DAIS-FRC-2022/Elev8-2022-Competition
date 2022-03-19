@@ -4,56 +4,49 @@
 
 package frc.robot.commands.teleop.feeder;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ServoFeederSubsystem;
-import frc.robot.Constants.FeederConstants;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.FeederConstants;
+import frc.robot.subsystems.ServoFeederSubsystem;
 
-public class servoCommand extends CommandBase {
-  /** Creates a new servoCommand. */
-  private boolean servo_temp = true;
-  ServoFeederSubsystem servoFeederSubsystem;
+public class ServoFeederCommand extends CommandBase {
 
-  public servoCommand(ServoFeederSubsystem servoFeederSubsystem) {
+  private ServoFeederSubsystem servoFeederSubsystem;
+  // private boolean servo_temp = false;
+
+  /** Creates a new ServoFeederCommand. */
+  public ServoFeederCommand(ServoFeederSubsystem servoFeederSubsystem) {
     this.servoFeederSubsystem = servoFeederSubsystem;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(servoFeederSubsystem);
+    addRequirements(this.servoFeederSubsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     this.servoFeederSubsystem.setServoSpeed(FeederConstants.positionAngle);
-    SmartDashboard.putBoolean("Servo up?", servo_temp);
-
-
+    // servo_temp = true;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("servoreading", servoFeederSubsystem.getPosition());
-    // if (servoFeederSubsystem.getPosition() == 0) {
-    // SmartDashboard.putBoolean("Servo up?", false);
-    // } else {
-    
-    // }
+    // SmartDashboard.putBoolean("Ser?", servo_temp);
+
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     this.servoFeederSubsystem.setServoSpeed(FeederConstants.initialAngle);
-    servo_temp = false;
-    SmartDashboard.putBoolean("s?", servo_temp);
     // SmartDashboard.putBoolean("Servo up?", false);
-
+    // servo_temp = false;
+    // SmartDashboard.putBoolean("Ser?", servo_temp);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // return !RobotContainer.joyD.getRawButton(4);
     return false;
   }
 }
